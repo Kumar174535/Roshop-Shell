@@ -1,3 +1,5 @@
+cp nginx.conf /etc/nginx/nginx.conf
+
 #list modules
 dnf module disable nginx -y
 dnf module enable nginx:1.24 -y
