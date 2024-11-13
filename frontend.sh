@@ -1,4 +1,5 @@
 cp nginx.conf /etc/nginx/nginx.conf
+cp mongo.repo /etc/yum.repos.d/mongo.repo
 
 #list modules
 dnf module disable nginx -y
