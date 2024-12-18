@@ -1,14 +1,11 @@
 cp nginx.conf /etc/nginx/nginx.conf
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongodb.repo /etc/yum.repos.d/mongo.repo
 
 #list modules
 dnf module disable nginx -y
 dnf module enable nginx:1.24 -y
 dnf install nginx -y
 
-#start & enable service
-systemctl enable nginx
-systemctl start nginx
 
 #remove the default content
 rm -rf /usr/share/nginx/html/*
@@ -22,3 +19,4 @@ unzip /tmp/frontend.zip
 
 #restart service
 systemctl restart nginx
+systemctl enable nginx
