@@ -1,6 +1,4 @@
-color="\e[35m"
-no_color="\e[0m"
-
+source common.sh
 app_name=dispatch
 
 echo -e "$color Copy Dispatch Service $no_color"
@@ -9,6 +7,7 @@ cp dispatch.service /etc/systemd/system/dispatch.service
 echo -e "$color Install Golang $no_color"
 dnf install golang -y
 
+#function name
 app_prerequisites
 
 echo -e "$color Download application dependencies $no_color"
