@@ -1,29 +1,32 @@
-echo -e "\e[33m Copy Dispatch Service\e[0m"
+color="\e[35m"
+no_color="\e[0m"
+
+echo -e "$color Copy Dispatch Service $no_color"
 cp dispatch.service /etc/systemd/system/dispatch.service
 
-echo -e "\e[33m Install Golang\e[0m"
+echo -e "$color Install Golang $no_color"
 dnf install golang -y
 
-echo -e "\e[33m Add application user\e[0m"
+echo -e "$color Add application user $no_color"
 useradd roboshop
 
-echo -e "\e[33m Create application directory\e[0m"
+echo -e "$color Create application directory $no_color"
 rm -rf /app
 mkdir /app
 
-echo -e "\e[33m Download application content\e[0m"
+echo -e "$color Download application content $no_color"
 curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip
 cd /app
 
-echo -e "\e[33m Extract application content\e[0m"
+echo -e "$color Extract application content $no_color"
 unzip /tmp/dispatch.zip
 
-echo -e "\e[33m Download application dependencies\e[0m"
+echo -e "$color Download application dependencies $no_color"
 go mod init dispatch
 go get
 go build
 
-echo -e "\e[33m Start applicaion service\e[0m"
+echo -e "$color Start applicaion service $no_color"
 systemctl daemon-reload
 systemctl enable dispatch
 systemctl restart dispatch
