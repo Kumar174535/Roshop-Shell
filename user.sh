@@ -1,21 +1,20 @@
+source common.sh
+
+echo -e "$color copy user service $no_color"
 cp user.service /etc/systemd/system/user.service
 
+echo -e "$color install nodejs $no_color"
 dnf module disable nodejs -y
 dnf module enable nodejs:20 -y
-
 dnf install nodejs -y
 
-useradd roboshop
+#function_name
+app_prerequisites
 
-mkdir /app
-
-curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
-cd /app
-unzip /tmp/user.zip
-
-cd /app
+echo -e "$install dependencies $no_color"
 npm install
 
+echo -e "$color system services started $no_color"
 systemctl daemon-reload
 systemctl enable user
 systemctl restart user
