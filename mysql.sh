@@ -1,9 +1,11 @@
 source common.sh
 
-echo -e "$color Installing mysql server $no_color"
-dnf install mysql-server -y
+print_heading "Installing mysql server"
+dnf install mysql-server -y &>>log_file
+echo $? #exit status
 
-echo -e "$color system started services $no_color"
-systemctl enable mysqld
-systemctl restart mysqld
-mysql_secure_installation --set-root-pass RoboShop@1
+print_heading "system started services"
+systemctl enable mysqld &>>log_file
+systemctl restart mysqld &>>log_file
+mysql_secure_installation --set-root-pass RoboShop@1 &>>log_file
+echo $?

@@ -5,6 +5,7 @@ rm -f /tmp/roboshop.log
 
 app_prerequisites(){
   print_heading "Add application user"
+  rm -f roboshop
   useradd roboshop &>>$log_file
   echo $?
 

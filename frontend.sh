@@ -1,24 +1,30 @@
 source common.sh
 
-echo -e "$color Copy Nginx and mongodb server $no_color"
-cp nginx.conf /etc/nginx/nginx.conf
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
+print_heading "Copy Nginx and mongodb server"
+cp nginx.conf /etc/nginx/nginx.conf &>>log_file
+cp mongodb.repo /etc/yum.repos.d/mongo.repo &>>log_file
+echo $? #exit status
 
-echo -e "$color installing nginx server $no_color"
-dnf module disable nginx -y
-dnf module enable nginx:1.24 -y
-dnf install nginx -y
+print_heading "installing nginx server"
+dnf module disable nginx -y &>>log_file
+dnf module enable nginx:1.24 -y &>>log_file
+dnf install nginx -y &>>log_file
+echo $?
 
-echo -e "$color remove the default content $no_color"
-rm -rf /usr/share/nginx/html/*
+print_heading "remove the default content"
+rm -rf /usr/share/nginx/html/* &>>log_file
+echo $?
 
-echo -e "$color download the frontend content $no_color"
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+print_heading "Downloading frontend content"
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>log_file
+echo $?
 
-echo -e "$color extract the frontend content $no_color"
-cd /usr/share/nginx/html
-unzip /tmp/frontend.zip
+print_heading "extract the frontend content"
+cd /usr/share/nginx/html &>>log_file
+unzip /tmp/frontend.zip &>>log_file
+echo $?
 
-echo -e "$color system started services $no_color"
-systemctl restart nginx
-systemctl enable nginx
+print_heading "system started services"
+systemctl restart nginx &>>log_file
+systemctl enable nginx &>>log_file
+echo $?

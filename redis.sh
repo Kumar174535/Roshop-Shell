@@ -1,14 +1,17 @@
 source common.sh
 
-echo -e "$color installing redis $no_color"
-dnf module disable redis -y
-dnf module enable redis:7 -y
-dnf install redis -y
+print_heading "installing redis"
+dnf module disable redis -y &>>log_file #sending output to log file
+dnf module enable redis:7 -y &>>log_file
+dnf install redis -y &>>log_file
+echo $? #exit status
 
-echo -e "$color changing ip address to 0.0.0.0 $no_color"
-sed -i -e 's/127.0.0.1/0.0.0.0/' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf
+print_heading "changing ip_addr to 0"
+sed -i -e 's/127.0.0.1/0.0.0.0/' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf &>>log_file
+echo $?
 
-echo -e "$color system services started $no_color"
-systemctl enable redis
-systemctl restart redis
+print_heading "system services started"
+systemctl enable redis &>>log_file
+systemctl restart redis &>>log_file
+echo $?
 

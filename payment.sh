@@ -1,20 +1,25 @@
 source common.sh
 app_name=payment
 
-echo -e "$color Copy Payment Service $no_color"
-cp payment.service /etc/systemd/system/payment.service
 
-echo -e "$color Install python3 $no_color"
-dnf install python3 gcc python3-devel -y
+print_heading "Copy Payment Service"
+cp payment.service /etc/systemd/system/payment.service &>>log_file
+echo $?
+
+print_heading "Install python3"
+dnf install python3 gcc python3-devel -y &>>log_file
+echo $?
 
 #function_name
 app_prerequisites
 
-echo -e "$color installing dependencies $no_color"
-pip3 install -r requirements.txt
+print_heading "installing dependencies"
+pip3 install -r requirements.txt &>>log_file
+echo $?
 
-echo -e "$color restarting services $no_color"
-systemctl daemon-reload
-systemctl enable payment
-systemctl restart payment
+print_heading "restarting services"
+systemctl daemon-reload &>>log_file
+systemctl enable payment &>>log_file
+systemctl restart payment &>>log_file
+echo $?
 

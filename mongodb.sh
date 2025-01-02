@@ -1,14 +1,18 @@
 source common.sh
 
-echo -e "$color Copying mongodb $no_color"
-cp mongodb.repo /etc/yum.repos.d/mongodb.repo
+print_heading "Copying mongodb"
+cp mongodb.repo /etc/yum.repos.d/mongodb.repo &>>log_file
+echo $? #exit status
 
-echo -e "$color installing mongodb $no_color"
-dnf install mongodb-org -y
+print_heading "installing mongodb"
+dnf install mongodb-org -y &>>log_file
+echo $?
 
-echo -e "$color Setting ip address to 0.0.0.0 $no_color"
-sed -ie 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+print_heading "setting ip address to 0"
+sed -ie 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>>log_file
+echo $?
 
-echo -e "$color system service started $no_color"
-systemctl restart mongod
-systemctl enable mongod
+print_heading "system service started"
+systemctl restart mongod &>>log_file
+systemctl enable mongod &>>log_file
+echo $?

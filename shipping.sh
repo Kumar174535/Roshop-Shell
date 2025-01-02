@@ -1,22 +1,30 @@
-cp shipping.service /etc/systemd/system/shipping.service
+source common.sh
+app_name=shipping
 
-dnf install maven -y
+print_heading "copying shipping service file"
+cp shipping.service /etc/systemd/system/shipping.service &>>log_file #sending output to log file
+echo $? #exit status
 
-useradd roboshop
-mkdir /app
-curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
-cd /app
-unzip /tmp/shipping.zip
+print_heading "installing maven"
+dnf install maven -y &>>log_file
+echo $?
 
-mvn clean package
-mv target/shipping-1.0.jar shipping.jar
+app_prerequisites
 
+print_heading "Cleaning maven package"
+mvn clean package &>>log_file
+mv target/shipping-1.0.jar shipping.jar &>>log_file
+echo $>
 
-dnf install mysql -y
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/schema.sql
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/app-user.sql
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/master-data.sql
+print_heading "installing mysql"
+dnf install mysql -y &>>log_file
+mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/schema.sql &>>log_file
+mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/app-user.sql &>>log_file
+mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/master-data.sql &>>log_file
+echo $?
 
-systemctl daemon-reload
-systemctl enable shipping
-systemctl restart shipping
+print_heading "system service start"
+systemctl daemon-reload &>>log_file
+systemctl enable shipping &>>log_file
+systemctl restart shipping &>>log_file
+echo $?
