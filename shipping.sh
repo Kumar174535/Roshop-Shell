@@ -24,7 +24,5 @@ mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/master-data.sql &>>lo
 echo $?
 
 print_heading "system service start"
-systemctl daemon-reload &>>log_file
-systemctl enable shipping &>>log_file
-systemctl restart shipping &>>log_file
+service_start
 echo $?
