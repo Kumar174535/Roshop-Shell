@@ -1,22 +1,25 @@
 source common.sh
 app_name=cart
 
-echo -e "$color Copy Cart Service $no_color"
-cp cart.service /etc/systemd/system/cart.service
+print_heading "Copy Cart Service"
+cp cart.service /etc/systemd/system/cart.service &>>log_file
+echo $?
 
-echo -e "$color Install nodejs $no_color"
-dnf module disable nodejs -y
-dnf module enable nodejs:20 -y
-dnf install nodejs -y
+print_heading "Install nodejs"
+dnf module disable nodejs -y &>>log_file
+dnf module enable nodejs:20 -y &>>log_file
+dnf install nodejs -y &>>log_file
+echo $?
 
 #function_name
 app_prerequisites
 
-echo -e "$color Creating application dependencies $no_color"
-cd /app
-npm install
+print_heading "Creating application dependencies"
+cd /app &>>log_file
+npm install &>>log_file
+echo $?
 
-echo -e "$color system service restarts $no_color"
-systemctl daemon-reload
-systemctl enable cart
-systemctl restart cart
+print_heading "system service restarts"
+systemctl daemon-reload &>>log_file
+systemctl enable cart &>>log_file
+systemctl restart cart &>>log_file
