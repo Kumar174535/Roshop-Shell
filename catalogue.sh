@@ -1,4 +1,5 @@
 source common.sh
+app_name=catalogue
 
 print_heading "Copying Mongodb repo file"
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo &>>log_file
@@ -26,6 +27,5 @@ mongosh --host mongodb.devops24.shop </app/db/master-data.js &>>log_file
 echo $?
 
 print_heading "services start"
-systemctl daemon-reload &>>log_file
-systemctl enable catalogue &>>log_file
-systemctl restart catalogue &>>log_file
+service_start
+echo $?

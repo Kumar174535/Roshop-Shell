@@ -29,3 +29,9 @@ print_heading() {
   echo -e "$color $1 $no_color"  &>>/tmp/roboshop.log
   echo -e "$color $1 $no_color"
 }
+
+service_start(){
+  systemctl daemon-reload &>>log_file
+  systemctl enable $app_name &>>log_file
+  systemctl restart $app_name &>>log_file
+}
