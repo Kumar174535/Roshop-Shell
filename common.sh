@@ -27,4 +27,5 @@ app_prerequisites(){
 
 print_heading() {
   echo -e "$color $1 $no_color"  &>>/tmp/roboshop.log
+  echo -e "$color $1 $no_color"
 }
