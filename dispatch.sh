@@ -19,7 +19,7 @@ go build
 echo $?
 
 echo -e "$color Start applicaion service $no_color"
-systemctl daemon-reload
-systemctl enable dispatch
-systemctl restart dispatch
+systemctl daemon-reload &>>log_file
+systemctl enable dispatch &>>log_file
+systemctl restart dispatch &>>log_file
 echo $?
