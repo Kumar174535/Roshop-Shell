@@ -14,7 +14,7 @@ app_prerequisites
 print_heading "Cleaning maven package"
 mvn clean package &>>log_file
 mv target/shipping-1.0.jar shipping.jar &>>log_file
-echo $>
+echo $?
 
 print_heading "installing mysql"
 dnf install mysql -y &>>log_file
