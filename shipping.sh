@@ -18,9 +18,10 @@ echo $?
 
 print_heading "installing mysql"
 dnf install mysql -y &>>$log_file
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/schema.sql &>>$log_file
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/app-user.sql &>>$log_file
-mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/master-data.sql &>>$log_file
+for mysql_file in schema app-user master-data; do
+  mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/$mysql_file.sql &>>$log_file
+done
+
 echo $?
 
 print_heading "system service start"
