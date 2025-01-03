@@ -5,7 +5,7 @@ rm -f /tmp/roboshop.log
 
 app_prerequisites(){
   print_heading "Add application user"
-  userdel -f roboshop
+  userdel -f roboshop &>>log_file
   useradd roboshop &>>$log_file
   echo $?
 
@@ -33,6 +33,11 @@ print_heading() {
 
 service_start(){
   systemctl daemon-reload &>>log_file
+  systemctl enable $app_name &>>log_file
+  systemctl restart $app_name &>>log_file
+}
+
+service_no_daemon(){
   systemctl enable $app_name &>>log_file
   systemctl restart $app_name &>>log_file
 }

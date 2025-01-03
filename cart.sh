@@ -20,6 +20,4 @@ npm install &>>log_file
 echo $?
 
 print_heading "system service restarts"
-systemctl daemon-reload &>>log_file
-systemctl enable cart &>>log_file
-systemctl restart cart &>>log_file
+service_start

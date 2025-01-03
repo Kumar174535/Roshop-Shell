@@ -1,4 +1,5 @@
 source common.sh
+app_name=redis
 
 print_heading "installing redis"
 dnf module disable redis -y &>>log_file #sending output to log file
@@ -11,7 +12,6 @@ sed -i -e 's/127.0.0.1/0.0.0.0/' -e '/protected-mode/ c protected-mode no' /etc/
 echo $?
 
 print_heading "system services started"
-systemctl enable redis &>>log_file
-systemctl restart redis &>>log_file
+service_no_daemon
 echo $?
 

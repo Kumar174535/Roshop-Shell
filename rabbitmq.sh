@@ -1,4 +1,5 @@
 source common.sh
+app_name=rabbitmq-server
 
 print_heading "Coppying rabbitmq"
 cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>>log_file #redirecting output to log file
@@ -11,8 +12,7 @@ rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>log_file
 echo $?
 
 print_heading "system services started"
-systemctl enable rabbitmq-server &>>log_file
-systemctl restart rabbitmq-server &>>log_file
+service_no_daemon
 echo $?
 
 

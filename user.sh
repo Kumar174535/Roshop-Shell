@@ -1,21 +1,24 @@
 source common.sh
+app_name=user
 
-echo -e "$color copy user service $no_color"
-cp user.service /etc/systemd/system/user.service
+print_heading "copy user service"
+cp user.service /etc/systemd/system/user.service &>>log_file
+echo $?
 
-echo -e "$color install nodejs $no_color"
-dnf module disable nodejs -y
-dnf module enable nodejs:20 -y
-dnf install nodejs -y
+print_heading "install nodejs"
+dnf module disable nodejs -y &>>log_file
+dnf module enable nodejs:20 -y &>>log_file
+dnf install nodejs -y &>>log_file
+echo $?
 
 #function_name
 app_prerequisites
 
-echo -e "$install dependencies $no_color"
-npm install
+print_heading "install dependencies"
+npm install &>>log_file
+echo $?
 
-echo -e "$color system services started $no_color"
-systemctl daemon-reload
-systemctl enable user
-systemctl restart user
+print_heading "system services started"
+service_start
+echo $?
 

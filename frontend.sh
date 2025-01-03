@@ -1,4 +1,5 @@
 source common.sh
+app_name=frontend
 
 print_heading "Copy Nginx and mongodb server"
 cp nginx.conf /etc/nginx/nginx.conf &>>log_file
@@ -25,6 +26,5 @@ unzip /tmp/frontend.zip &>>log_file
 echo $?
 
 print_heading "system started services"
-systemctl restart nginx &>>log_file
-systemctl enable nginx &>>log_file
+service_no_daemon
 echo $?

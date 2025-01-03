@@ -18,8 +18,6 @@ pip3 install -r requirements.txt &>>log_file
 echo $?
 
 print_heading "restarting services"
-systemctl daemon-reload &>>log_file
-systemctl enable payment &>>log_file
-systemctl restart payment &>>log_file
+service_start
 echo $?
 
