@@ -4,9 +4,12 @@ rm -f /tmp/roboshop.log
 log_file=/tmp/roboshop.log
 
 
-app_prerequisites(){
+app_prerequisites() {
   print_heading "Add application user"
-  useradd roboshop &>>$log_file
+  id roboshop &>>$log_file
+  if [ $? -ne 0 ]; then
+    useradd roboshop &>>$log_file
+  fi
   echo $?
 
   print_heading "Creating application directory"
@@ -31,13 +34,23 @@ print_heading() {
   echo -e "$color $1 $no_color"
 }
 
-service_start(){
+service_start() {
   systemctl daemon-reload &>>$log_file
   systemctl enable $app_name &>>$log_file
   systemctl restart $app_name &>>$log_file
 }
 
-service_no_daemon(){
+service_no_daemon() {
   systemctl enable $app_name &>>$log_file
   systemctl restart $app_name &>>$log_file
+}
+
+status_check() {
+  if [ $1 -ne 0 ]; then
+    echo -e "\e[32m SUCCESS \e[0m"
+  else
+    echo -e "\e[31m FAILURE \e[0m"
+  fi
+
+
 }
