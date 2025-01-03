@@ -1,11 +1,11 @@
 color="\e[36m"
 no_color="\e[0m"
-log_file=/tmp/roboshop.log
 rm -f /tmp/roboshop.log
+log_file=/tmp/roboshop.log
+
 
 app_prerequisites(){
   print_heading "Add application user"
-  userdel -f roboshop &>>log_file
   useradd roboshop &>>$log_file
   echo $?
 
