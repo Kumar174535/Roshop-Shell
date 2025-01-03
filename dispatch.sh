@@ -13,9 +13,9 @@ echo $?
 app_prerequisites
 
 print_heading "Download application dependencies"
-go mod init dispatch &>>log_file
-go get &>>log_file
-go build &>>log_file
+go mod init dispatch &>>$log_file
+go get &>>$log_file
+go build &>>$log_file
 echo $?
 
 print_heading "Start applicaion service"
