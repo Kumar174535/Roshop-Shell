@@ -10,22 +10,22 @@ app_prerequisites() {
   if [ $? -ne 0 ]; then
     useradd roboshop &>>$log_file
   fi
-  echo $?
+  status_check $?
 
   print_heading "Creating application directory"
   rm -rf /app &>>$log_file
   mkdir /app
-  echo $?
+  status_check $?
 
   print_heading "downloading content"
   curl -L -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>>$log_file
   cd /app
-  echo $?
+  status_check $?
 
   print_heading "extract content"
   unzip /tmp/$app_name.zip &>>$log_file
   cd /app
-  echo $?
+  status_check $?
 }
 
 print_heading() {
