@@ -1,5 +1,5 @@
 source common.sh
-app_name=frontend
+app_name=nginx
 
 print_heading "Copy Nginx and mongodb server"
 cp nginx.conf /etc/nginx/nginx.conf &>>$log_file
