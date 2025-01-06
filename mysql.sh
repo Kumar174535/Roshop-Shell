@@ -3,6 +3,7 @@ app_name=mysql
 
 if [ -z "$1" ];then
   echo input mysql root password is missing
+  exit 1
 fi
 
 mysql_root_password=$1

@@ -36,6 +36,7 @@ print_heading() {
 systemd_setup() {
   print_heading "Copy" $app_name "Service File"
   cp $scripts_path/$app_name.service /etc/systemd/system/$app_name.service &>>$log_file
+  sed -i -e "s/rabbitmq_password/${rabbitmq_password}/" /etc/systemd/system/$app_name.service &>>$log_file
   status_check $?
 
   print_heading "system service started"
@@ -75,7 +76,7 @@ maven_setup() {
 
   for mysql_file in schema app-user master-data; do
     print_heading "load SQL file"
-    mysql -h mysql.devops24.shop -uroot -p$maven_root_password < /app/db/$mysql_file.sql &>>$log_file
+    mysql -h mysql.devops24.shop -uroot -p$mysql_root_password < /app/db/$mysql_file.sql &>>$log_file
   done
   status_check $?
 
