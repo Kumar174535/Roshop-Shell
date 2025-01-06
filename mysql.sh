@@ -1,11 +1,14 @@
 source common.sh
-app_name=mysqld
+app_name=mysql
 
-print_heading "Installing mysql server"
+print_heading "Install mysql server"
 dnf install mysql-server -y &>>$log_file
-echo $? #exit status
+status_check $? #exit status
 
-print_heading "system started services"
+print_heading "start system services"
 service_no_daemon
+status_check $?
+
+print_heading "setup mysql password"
 mysql_secure_installation --set-root-pass RoboShop@1 &>>$log_file
-echo $?
+status_check $?

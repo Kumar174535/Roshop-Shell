@@ -2,6 +2,7 @@ color="\e[36m"
 no_color="\e[0m"
 log_file=/tmp/roboshop.log
 rm -f /tmp/roboshop.log
+scripts_path=$(pwd) #command substitution
 
 app_prerequisites() {
   print_heading "Add application user"
@@ -25,7 +26,6 @@ app_prerequisites() {
   unzip /tmp/$app_name.zip &>>$log_file
   cd /app
   echo $?
-
 }
 
 print_heading() {
@@ -33,7 +33,12 @@ print_heading() {
   echo -e "$color $1 $no_color"
 }
 
-service_start() {
+systemd_setup() {
+  print_heading "Copy" $app_name "Service File"
+  cp $scripts_path/$app_name.service /etc/systemd/system/$app_name.service &>>$log_file
+  status_check $?
+
+  print_heading "system service started"
   systemctl daemon-reload &>>$log_file
   systemctl enable $app_name &>>$log_file
   systemctl restart $app_name &>>$log_file
@@ -50,6 +55,66 @@ status_check() {
   else
     echo -e "\e[31m FAILURE \e[0m"
   fi
+}
 
+maven_setup() {
+  print_heading "install maven"
+  dnf install maven -y &>>$log_file
+  status_check $?
 
+  app_prerequisites
+
+  print_heading "Cleaning Application Dependencies"
+  mvn clean package &>>$log_file
+  mv target/$app_name-1.0.jar $app_name.jar &>>$log_file
+  status_check $?
+
+  print_heading "install MYSQL Client"
+  dnf install mysql -y &>>$log_file &>>$log_file
+  status_check $?
+
+  for mysql_file in schema app-user master-data; do
+    print_heading "load SQL file"
+    mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/$mysql_file.sql &>>$log_file
+  done
+  status_check $?
+
+  systemd_setup
+}
+
+python_setup() {
+  print_heading "Install python3"
+  dnf install python3 gcc python3-devel -y &>>$log_file
+  status_check $?
+
+  #function_name
+  app_prerequisites
+
+  print_heading "Download application dependencies"
+  pip3 install -r requirements.txt &>>$log_file
+  status_check $?
+
+  systemd_setup
+}
+
+nodejs_setup() {
+  print_heading "Disable default nodejs"
+  dnf module disable nodejs -y &>>$log_file
+  status_check $?
+
+  print_heading "Enable nodejs 20 version"
+  dnf module enable nodejs:20 -y &>>$log_file
+  status_check $?
+
+  print_heading "Install nodejs"
+  dnf install nodejs -y &>>$log_file
+  status_check $?
+
+  app_prerequisites
+
+  print_heading "install dependencies"
+  npm install &>>$log_file
+  status_check $?
+
+  systemd_setup
 }

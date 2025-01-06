@@ -1,31 +1,14 @@
 source common.sh
 app_name=catalogue
 
-print_heading "Copying Mongodb repo file"
+print_heading "Copy Mongodb repo file"
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo &>>$log_file
-echo $?
+status_check $?
 
-print_heading "Copying catalogue service file"
-cp catalogue.service /etc/systemd/system/catalogue.service &>>$log_file
-echo $? #exit status
+nodejs_setup
 
-print_heading "Installing nodejs"
-dnf module disable nodejs -y &>>$log_file
-dnf module enable nodejs:20 -y &>>$log_file
-dnf install nodejs -y &>>$log_file
-echo $?
-
-app_prerequisites
-
-print_heading "install dependencies"
-npm install &>>$log_file
-echo $?
-
-print_heading "Installing mongodb"
+print_heading "Install mongodb"
 dnf install mongodb-mongosh -y &>>$log_file
 mongosh --host mongodb.devops24.shop </app/db/master-data.js &>>$log_file
-echo $?
+status_check $?
 
-print_heading "services start"
-service_start
-echo $?

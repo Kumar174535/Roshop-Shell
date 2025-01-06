@@ -18,6 +18,6 @@ go get &>>$log_file
 go build &>>$log_file
 echo $?
 
-print_heading "Start applicaion service"
+print_heading "Start system service"
 service_start
 echo $?
