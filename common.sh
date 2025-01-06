@@ -75,7 +75,7 @@ maven_setup() {
 
   for mysql_file in schema app-user master-data; do
     print_heading "load SQL file"
-    mysql -h mysql.devops24.shop -uroot -pRoboShop@1 < /app/db/$mysql_file.sql &>>$log_file
+    mysql -h mysql.devops24.shop -uroot -p$maven_root_password < /app/db/$mysql_file.sql &>>$log_file
   done
   status_check $?
 
@@ -117,4 +117,23 @@ nodejs_setup() {
   status_check $?
 
   systemd_setup
+}
+
+golang_setup() {
+  print_heading "Install Golang"
+  dnf install golang -y &>>$log_file
+  echo $?
+
+  #function name
+  app_prerequisites
+
+  print_heading "Download application dependencies"
+  go mod init dispatch &>>$log_file
+  go get &>>$log_file
+  go build &>>$log_file
+  echo $?
+
+  print_heading "Start system service"
+  service_start
+  echo $?
 }
