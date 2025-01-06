@@ -43,6 +43,7 @@ systemd_setup() {
   systemctl daemon-reload &>>$log_file
   systemctl enable $app_name &>>$log_file
   systemctl restart $app_name &>>$log_file
+  status_check $?
 }
 
 service_no_daemon() {
