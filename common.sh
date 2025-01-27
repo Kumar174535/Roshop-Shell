@@ -76,7 +76,7 @@ maven_setup() {
   status_check $?
 
   for mysql_file in schema app-user master-data; do
-    print_heading "load SQL file"
+    print_heading "load SQL file" &>>$log_file
     mysql -h mysql.devops24.shop -uroot -p$mysql_root_password < /app/db/$mysql_file.sql &>>$log_file
   done
   status_check $?
