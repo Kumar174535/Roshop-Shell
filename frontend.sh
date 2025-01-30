@@ -23,6 +23,7 @@ rm -rf /usr/share/nginx/html/* &>>$log_file
 status_check $?
 
 print_heading "Download frontend content"
+#curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$log_file
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$log_file
 status_check $?
 
