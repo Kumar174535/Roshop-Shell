@@ -11,4 +11,4 @@ print_heading "Copy Dispatch Service"
 cp dispatch.service /etc/systemd/system/dispatch.service &>>$log_file
 echo $?
 
-goland_setup
+golang_setup
